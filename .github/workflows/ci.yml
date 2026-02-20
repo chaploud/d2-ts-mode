@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  byte-compile:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        emacs-version: ['30.1', 'snapshot']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jcs090218/setup-emacs@master
+        with:
+          version: ${{ matrix.emacs-version }}
+      - name: Byte-compile
+        run: |
+          emacs --batch -L . \
+            --eval "(setq byte-compile-error-on-warn t)" \
+            -f batch-byte-compile \
+            d2-ts-indent.el \
+            d2-ts-font-lock.el \
+            d2-ts-imenu.el \
+            d2-ts-compile.el \
+            d2-ts-mode.el
+
+  package-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jcs090218/setup-emacs@master
+        with:
+          version: '30.1'
+      - name: Install package-lint
+        run: |
+          emacs --batch \
+            --eval "(require 'package)" \
+            --eval "(push '(\"melpa\" . \"https://melpa.org/packages/\") package-archives)" \
+            --eval "(package-initialize)" \
+            --eval "(package-refresh-contents)" \
+            --eval "(package-install 'package-lint)"
+      - name: Run package-lint
+        run: |
+          emacs --batch -L . \
+            --eval "(require 'package)" \
+            --eval "(push '(\"melpa\" . \"https://melpa.org/packages/\") package-archives)" \
+            --eval "(package-initialize)" \
+            --eval "(require 'package-lint)" \
+            -f package-lint-batch-and-exit \
+            d2-ts-mode.el
+
+  checkdoc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jcs090218/setup-emacs@master
+        with:
+          version: '30.1'
+      - name: Run checkdoc
+        run: |
+          emacs --batch \
+            --eval "(require 'checkdoc)" \
+            --eval "
+          (let ((files '(\"d2-ts-mode.el\"
+                         \"d2-ts-compile.el\"
+                         \"d2-ts-font-lock.el\"
+                         \"d2-ts-imenu.el\"
+                         \"d2-ts-indent.el\")))
+            (dolist (file files)
+              (checkdoc-file file))
+            (let ((buf (get-buffer \"*checkdoc*\")))
+              (when buf
+                (with-current-buffer buf
+                  (goto-char (point-min))
+                  (when (re-search-forward \"^[^ \\\\n]\" nil t)
+                    (princ (buffer-string) #'external-debugging-output)
+                    (kill-emacs 1))))))"

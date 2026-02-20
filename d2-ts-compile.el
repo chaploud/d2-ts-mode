@@ -79,7 +79,7 @@ in an Emacs side window with `auto-revert-mode'.
   "Check that the d2 executable is available.
 Signal `user-error' if not found."
   (unless (executable-find d2-ts-mode-d2-executable)
-    (user-error "d2 executable not found.  Install it from https://d2lang.com/tour/install")))
+    (user-error "D2 executable not found; install from https://d2lang.com/tour/install")))
 
 (defun d2-ts-compile--output-file (input-file)
   "Return the output file path for INPUT-FILE.
