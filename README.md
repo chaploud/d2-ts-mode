@@ -45,7 +45,15 @@ Adjust with `treesit-font-lock-level`:
 
 ## Installation
 
-### MELPA (recommended)
+### use-package + vc (Emacs 30+, no external tools)
+
+```elisp
+(use-package d2-ts-mode
+  :ensure t
+  :vc (:url "https://github.com/chaploud/d2-ts-mode" :rev :newest :branch "main"))
+```
+
+### MELPA
 
 Once available on MELPA:
 
