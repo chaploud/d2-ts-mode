@@ -1,0 +1,39 @@
+# User Registration Flow
+# New user sign-up process for a web service
+
+direction: down
+
+start: Open registration page {
+  shape: oval
+}
+
+input: Enter email & password
+
+validate: Validate input {
+  shape: diamond
+}
+
+error: Show error message {
+  style.fill: "#fadbd8"
+}
+
+send: Send verification email
+
+confirm: Click link in email
+
+done: Registration complete {
+  shape: oval
+  style.fill: "#d5f5e3"
+}
+
+start -> input
+input -> validate
+validate -> error: NG {
+  style.stroke: "#e74c3c"
+}
+error -> input: Retry
+validate -> send: OK {
+  style.stroke: "#27ae60"
+}
+send -> confirm
+confirm -> done
