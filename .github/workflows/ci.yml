@@ -27,7 +27,8 @@ jobs:
             d2-ts-font-lock.el \
             d2-ts-imenu.el \
             d2-ts-compile.el \
-            d2-ts-mode.el
+            d2-ts-mode.el \
+            ob-d2.el
 
   package-lint:
     runs-on: ubuntu-latest
@@ -70,13 +71,12 @@ jobs:
                          \"d2-ts-compile.el\"
                          \"d2-ts-font-lock.el\"
                          \"d2-ts-imenu.el\"
-                         \"d2-ts-indent.el\")))
+                         \"d2-ts-indent.el\"
+                         \"ob-d2.el\"))
+                (found 0))
+            (advice-add 'display-warning :before
+                        (lambda (&rest _) (setq found (1+ found))))
             (dolist (file files)
               (checkdoc-file file))
-            (let ((buf (get-buffer \"*checkdoc*\")))
-              (when buf
-                (with-current-buffer buf
-                  (goto-char (point-min))
-                  (when (re-search-forward \"^[^ \\\\n]\" nil t)
-                    (princ (buffer-string) #'external-debugging-output)
-                    (kill-emacs 1))))))"
+            (when (> found 0)
+              (kill-emacs 1)))"

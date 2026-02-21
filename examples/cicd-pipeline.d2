@@ -1,0 +1,57 @@
+# CI/CD Pipeline
+# A GitHub-based automated deployment flow
+
+direction: right
+
+classes: {
+  step: {
+    style.fill: "#eaf2f8"
+    style.border-radius: 8
+  }
+  check: {
+    shape: diamond
+    style.fill: "#fef9e7"
+  }
+  success: {
+    style.fill: "#d5f5e3"
+    style.border-radius: 8
+  }
+  fail: {
+    style.fill: "#fadbd8"
+    style.border-radius: 8
+  }
+}
+
+push: git push {
+  shape: oval
+}
+lint: Lint {
+  class: step
+}
+test: Test {
+  class: step
+}
+result: All passed? {
+  class: check
+}
+build: Build {
+  class: step
+}
+deploy_stg: Deploy\nStaging {
+  class: step
+}
+deploy_prod: Deploy Production {
+  class: success
+}
+notify_fail: Failure Notification {
+  class: fail
+}
+
+push -> lint -> test -> result
+result -> build: Yes {
+  style.stroke: "#27ae60"
+}
+result -> notify_fail: No {
+  style.stroke: "#e74c3c"
+}
+build -> deploy_stg -> deploy_prod

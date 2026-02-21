@@ -1,0 +1,50 @@
+# E-Commerce ER Diagram
+# Table definitions and relations for an online store
+
+users: Users {
+  shape: sql_table
+  id: INTEGER {constraint: primary_key}
+  name: VARCHAR(100)
+  email: VARCHAR(255) {constraint: unique}
+  created_at: TIMESTAMP
+}
+
+products: Products {
+  shape: sql_table
+  id: INTEGER {constraint: primary_key}
+  name: VARCHAR(200)
+  price: DECIMAL(10,2)
+  stock: INTEGER
+  category_id: INTEGER {constraint: foreign_key}
+}
+
+categories: Categories {
+  shape: sql_table
+  id: INTEGER {constraint: primary_key}
+  name: VARCHAR(100)
+  parent_id: INTEGER {constraint: foreign_key}
+}
+
+orders: Orders {
+  shape: sql_table
+  id: INTEGER {constraint: primary_key}
+  user_id: INTEGER {constraint: foreign_key}
+  total: DECIMAL(10,2)
+  status: VARCHAR(20)
+  ordered_at: TIMESTAMP
+}
+
+order_items: Order Items {
+  shape: sql_table
+  id: INTEGER {constraint: primary_key}
+  order_id: INTEGER {constraint: foreign_key}
+  product_id: INTEGER {constraint: foreign_key}
+  quantity: INTEGER
+  price: DECIMAL(10,2)
+}
+
+users -> orders: 1:N
+orders -> order_items: 1:N
+products -> order_items: 1:N
+categories -> products: 1:N
+categories -> categories: Recursive

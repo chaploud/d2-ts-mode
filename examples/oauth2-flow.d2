@@ -1,0 +1,20 @@
+# OAuth2 Authorization Code Flow
+# Social login authentication sequence
+
+shape: sequence_diagram
+
+user: User
+app: Web App
+idp: Auth Provider\n(Google, etc.)
+api: API Server
+
+user -> app: Click login button
+app -> idp: Authorization request\n(client_id, redirect_uri, scope)
+idp -> user: Show login screen
+user -> idp: Enter credentials
+idp -> app: Authorization code (redirect)
+app -> idp: Token request\n(code, client_secret)
+idp -> app: Access token + Refresh token
+app -> api: API request\n(Authorization: Bearer token)
+api -> app: Return data
+app -> user: Login complete

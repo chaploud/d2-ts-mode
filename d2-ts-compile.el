@@ -136,11 +136,24 @@ Writes buffer contents to a temporary file and compiles it.
 Useful for unsaved buffers."
   (interactive)
   (d2-ts-compile--check-d2)
+  (d2-ts-compile--run-region (point-min) (point-max)))
+
+;;;###autoload
+(defun d2-ts-mode-compile-region (beg end)
+  "Compile the region between BEG and END as D2.
+Writes the region to a temporary file and compiles it."
+  (interactive "r")
+  (d2-ts-compile--check-d2)
+  (d2-ts-compile--run-region beg end))
+
+(defun d2-ts-compile--run-region (beg end)
+  "Compile the region between BEG and END as D2.
+Writes it to a temporary file, compiles, and cleans up."
   (let* ((tmp (make-temp-file "d2-" nil ".d2"))
          (output (d2-ts-compile--output-file
                   (or buffer-file-name
                       (expand-file-name "d2-output" temporary-file-directory)))))
-    (write-region (point-min) (point-max) tmp nil 'silent)
+    (write-region beg end tmp nil 'silent)
     (d2-ts-compile--run tmp output
                         (lambda () (delete-file tmp)))))
 

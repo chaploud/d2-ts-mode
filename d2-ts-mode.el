@@ -5,7 +5,7 @@
 ;; Author: Shota Fukumori
 ;; Version: 0.1.0
 ;; Keywords: languages d2 tree-sitter
-;; URL: https://github.com/sorah/d2-ts-mode
+;; URL: https://github.com/chaploud/d2-ts-mode
 ;; Package-Requires: ((emacs "30.1"))
 
 ;; This file is not part of GNU Emacs.
@@ -133,6 +133,7 @@ Extracts the first identifier from a declaration or method_declaration."
   :doc "Keymap for `d2-ts-mode'."
   "C-c C-c" #'d2-ts-mode-compile
   "C-c C-b" #'d2-ts-mode-compile-buffer
+  "C-c C-r" #'d2-ts-mode-compile-region
   "C-c C-w" #'d2-ts-mode-watch
   "C-c C-q" #'d2-ts-mode-watch-stop
   "C-c C-p" #'d2-ts-mode-preview)

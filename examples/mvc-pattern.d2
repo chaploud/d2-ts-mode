@@ -1,0 +1,36 @@
+# MVC Pattern Class Diagram
+# Class design for MVC architecture
+
+direction: right
+
+Model: Model {
+  shape: class
+  +data: Map
+  +validate(): boolean
+  +save(): void
+  +find(id): Model
+}
+
+View: View {
+  shape: class
+  +template: String
+  +render(data): HTML
+  +update(): void
+}
+
+Controller: Controller {
+  shape: class
+  -model: Model
+  -view: View
+  +index(): Response
+  +show(id): Response
+  +create(params): Response
+  +update(id, params): Response
+  +delete(id): Response
+}
+
+Controller -> Model: Data operations
+Controller -> View: Render instructions
+Model -> View: Data update notification {
+  style.stroke-dash: 5
+}

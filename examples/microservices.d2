@@ -1,0 +1,76 @@
+# Microservices Architecture
+# API gateway + microservices + message queue
+
+direction: right
+
+classes: {
+  service: {
+    style.fill: "#eaf2f8"
+    style.stroke: "#2980b9"
+    style.border-radius: 8
+  }
+  store: {
+    shape: cylinder
+    style.fill: "#d5f5e3"
+    style.stroke: "#27ae60"
+  }
+  async-conn: {
+    style.stroke-dash: 5
+    style.stroke: "#95a5a6"
+  }
+}
+
+client: Client {
+  web: Web Browser
+  mobile: Mobile App
+}
+
+gateway: API Gateway {
+  style.fill: "#fdebd0"
+  style.stroke: "#e67e22"
+  style.border-radius: 8
+}
+
+services: Services {
+  auth: Auth Service {
+    class: service
+  }
+  user: User Service {
+    class: service
+  }
+  order: Order Service {
+    class: service
+  }
+  notify: Notification Service {
+    class: service
+  }
+}
+
+mq: Message Queue {
+  shape: queue
+  style.fill: "#fdebd0"
+}
+
+datastores: Data Stores {
+  user_db: User DB {
+    class: store
+  }
+  order_db: Order DB {
+    class: store
+  }
+}
+
+client.web -> gateway
+client.mobile -> gateway
+gateway -> services.auth
+gateway -> services.user
+gateway -> services.order
+
+services.user -> datastores.user_db
+services.order -> datastores.order_db
+services.order -> mq: Publish event {
+  class: async-conn
+}
+mq -> services.notify: Subscribe event {
+  class: async-conn
+}
