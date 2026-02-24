@@ -93,8 +93,7 @@
      [(glob_filter) (inverse_glob_filter) (visibility_mark)]
      @font-lock-keyword-face
      ((identifier) @font-lock-keyword-face
-      (:match "\\`_\\'" @font-lock-keyword-face))
-     )
+      (:match "\\`_\\'" @font-lock-keyword-face)))
 
    :language 'd2
    :feature 'string
