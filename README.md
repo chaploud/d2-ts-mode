@@ -23,7 +23,7 @@ A tree-sitter based major mode for editing [D2](https://d2lang.com) diagram file
 | Watch / Live reload | `C-c C-w` — `d2 --watch` (browser or Emacs side window) |
 | Watch stop          | `C-c C-q` — stop watch process                          |
 | Emacs image preview | `C-c C-p` — side window with auto-revert on save        |
-| Org-Babel           | `#+begin_src d2 :file out.svg` via `ob-d2.el`           |
+| Org-Babel           | `#+begin_src d2 :file out.svg` via [ob-d2](https://github.com/xcapaldi/ob-d2) (optional, MELPA) |
 
 ### Font-lock levels
 
@@ -99,6 +99,20 @@ M-x d2-ts-mode-reinstall-grammar
 | `d2-ts-mode-output-format`    | `"svg"`   | Output format: `"svg"`, `"png"`, or `"pdf"`        |
 | `d2-ts-mode-compile-flags`    | `nil`     | Extra CLI flags passed to d2 (list of strings)     |
 | `d2-ts-mode-watch-method`     | `'emacs`  | `'emacs` or `'browser` — where `C-c C-w` previews |
+
+## Org-Babel (optional)
+
+Install [ob-d2](https://github.com/xcapaldi/ob-d2) (available on MELPA) to evaluate D2 source blocks in Org files.
+When `d2-ts-mode` is loaded, `d2-ts-mode-d2-executable` is automatically synced to `ob-d2-command`.
+
+```elisp
+(use-package ob-d2
+  :ensure t
+  :after org
+  :config
+  (add-to-list 'org-babel-load-languages '(d2 . t))
+  (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+```
 
 ## Examples
 
