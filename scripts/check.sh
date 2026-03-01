@@ -9,7 +9,6 @@ EL_FILES=(
   d2-ts-imenu.el
   d2-ts-compile.el
   d2-ts-mode.el
-  ob-d2.el
 )
 
 pass=0
