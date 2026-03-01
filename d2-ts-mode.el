@@ -188,12 +188,6 @@ Extracts the first identifier from a declaration or method_declaration."
 (if (treesit-ready-p 'd2 t)
     (add-to-list 'auto-mode-alist '("\\.d2\\'" . d2-ts-mode)))
 
-;; Optional integration with ob-d2 (available on MELPA).
-;; Sync d2-ts-mode settings so Org-Babel uses the same executable.
-(with-eval-after-load 'ob-d2
-  (when (boundp 'ob-d2-command)
-    (setq ob-d2-command d2-ts-mode-d2-executable)))
-
 (provide 'd2-ts-mode)
 
 ;;; d2-ts-mode.el ends here

@@ -103,13 +103,14 @@ M-x d2-ts-mode-reinstall-grammar
 ## Org-Babel (optional)
 
 Install [ob-d2](https://github.com/xcapaldi/ob-d2) (available on MELPA) to evaluate D2 source blocks in Org files.
-When `d2-ts-mode` is loaded, `d2-ts-mode-d2-executable` is automatically synced to `ob-d2-command`.
+To sync the d2 executable path with `d2-ts-mode`, set `ob-d2-command` in your config:
 
 ```elisp
 (use-package ob-d2
   :ensure t
-  :after org
+  :after (org d2-ts-mode)
   :config
+  (setq ob-d2-command d2-ts-mode-d2-executable)
   (add-to-list 'org-babel-load-languages '(d2 . t))
   (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
 ```
